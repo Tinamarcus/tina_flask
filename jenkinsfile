@@ -18,7 +18,7 @@ pipeline {
                 script {
                     sh """
                     cd /var/lib/jenkins/workspace/flask
-                    sudo docker build -t tinamarcus/flaskapp:v1 .
+                    sudo docker build -t tinamarcus/flaskapp:v2 .
                     """
                 }
             }
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    sudo docker push tinamarcus/flaskapp:v1
+                    sudo docker push tinamarcus/flaskapp:v2
                     """
                 }
             }
