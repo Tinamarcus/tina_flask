@@ -1,15 +1,15 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_REGISTRY = "kemiye01"
-        DOCKER_IMAGE_NAME = "flask-app"
-        DOCKER_IMAGE_TAG = "v4"
-    }
+    // environment {
+    //     DOCKER_REGISTRY = "tinamarcus"
+    //     DOCKER_IMAGE_NAME = "flask-app"
+    //     DOCKER_IMAGE_TAG = "v1"
+    // }
     stages {
         stage('git clone') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/kemiye01/flask-app.git'
+                    git branch: 'main', url: 'https://github.com/Tinamarcus/tina_flask.git'
                 }
             }
         }
@@ -17,8 +17,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    cd /var/lib/jenkins/workspace/flask-app
-                    sudo docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+                    cd /var/lib/jenkins/workspace/flask
+                    sudo docker build -t tinamarcus/flaskapp:v1
                     """
                 }
             }
@@ -26,8 +26,8 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh "echo '${DOCKER_PASSWORD}' | sudo docker login -u '${DOCKER_USERNAME}' --password-stdin"
+                    withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'DOCKER_PASSWORD', username: 'DOCKER_tinamarcus')]) {
+                        sh "echo '${DOCKER_PASSWORD}' | sudo docker login -u 'tinamarcus' --password-stdin"
                         echo 'Successfully logged into Docker Hub'
                     }
                 }
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    sudo docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+                    sudo docker push tinamarcus/flaskapp:v1
                     """
                 }
             }

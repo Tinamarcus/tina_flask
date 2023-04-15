@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 
 # install Mysql
-RUN pip install mysql-connector-python
+#RUN pip install mysql-connector-python
 
 # Install the required packages
 RUN pip install --no-cache-dir -r requirements.txt

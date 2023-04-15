@@ -3,12 +3,12 @@
   hosts: all
   become: true
   
-  vars:
-    ansible_become: yes
-    docker_image_name: kemiye01/flask-app:v4
-    docker_container_name: faskapp
-    # python_interpreter: /usr/bin/python3
-    container_default_behavior: compatibility
+  # vars:
+  #   ansible_become: yes
+  #   docker_image_name: kemiye01/flask-app:v4
+  #   docker_container_name: faskapp
+  #   # python_interpreter: /usr/bin/python3
+  #   container_default_behavior: compatibility
   
   tasks:
      
@@ -44,7 +44,7 @@
 
     - name: Pull Docker image
       docker_image:
-        name: kemiye01/flask-app:v4
+        name: tinamarcus/flaskapp:v1
         source: pull
 
     # - name: Pull Docker Image
@@ -56,7 +56,7 @@
     - name: Start Docker Container
       docker_container:
         name: flaskapp
-        image: kemiye01/flask-app:v4
+        image: tinamarcus/flaskapp:v1
         ports:
           - 5000:5000
         state: started
