@@ -1,10 +1,10 @@
 pipeline {
     agent any
-    // environment {
-    //     DOCKER_REGISTRY = "tinamarcus"
-    //     DOCKER_IMAGE_NAME = "flask-app"
-    //     DOCKER_IMAGE_TAG = "v1"
-    // }
+    environment {
+        DOCKER_REGISTRY = "tinamarcus"
+        DOCKER_IMAGE_NAME = "flaskapp"
+        DOCKER_IMAGE_TAG = "v2"
+    }
     stages {
         stage('git clone') {
             steps {
@@ -17,8 +17,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    cd /var/lib/jenkins/workspace/flask
-                    sudo docker build -t tinamarcus/flaskapp:v2 .
+                    cd /var/lib/jenkins/workspace/flask-app
+                    sudo docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
                     """
                 }
             }
@@ -26,8 +26,8 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    withCredentials(credentialsId: 'docker') {
-                        sh "echo '${DOCKER_PASSWORD}' | sudo docker login -u 'tinamarcus' --password-stdin"
+                    withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh "echo '${DOCKER_PASSWORD}' | sudo docker login -u '${DOCKER_USERNAME}' --password-stdin"
                         echo 'Successfully logged into Docker Hub'
                     }
                 }
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    sudo docker push tinamarcus/flaskapp:v2
+                    sudo docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
                     """
                 }
             }
